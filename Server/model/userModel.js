@@ -33,11 +33,6 @@ let userSchema = new mongoose.Schema(
       default:
         "https://wallpapers.com/images/high/anime-girls-pfp-pink-hair-b18tfcqwarpblq60.webp",
     },
-    otp: {
-      type: Number,
-      require: [true, "user type is require"],
-      unique: true,
-    },
     password: {
       type: String,
       require: [true, "user type is require"],
