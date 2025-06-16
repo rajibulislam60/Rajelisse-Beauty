@@ -1,3 +1,4 @@
+const sendEmail = require("../helpers/sendEmail");
 const EmailValidateCheck = require("../helpers/validateEmail");
 const userModel = require("../model/userModel");
 
@@ -18,6 +19,7 @@ const registrationController = async (req, res) => {
       password,
     });
     await user.save();
+    sendEmail(email);
     res.send(user);
   } catch (error) {
     console.log(error);
