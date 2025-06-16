@@ -1,19 +1,24 @@
+const EmailValidateCheck = require("../helpers/validateEmail");
 const userModel = require("../model/userModel");
 
 const registrationController = async (req, res) => {
-  let { name, email, phone, address, usertype, profile, password } = req.body;
+  let { name, email, phone, usertype, password } = req.body;
+  EmailValidateCheck(email);
+  if (!name || !email || !phone || !password) {
+    return res.status(400).send({
+      error: "Field is required.",
+    });
+  }
   try {
     let user = new userModel({
       name,
       email,
       phone,
-      address,
       usertype,
-      profile,
       password,
     });
-    res.send(user);
     await user.save();
+    res.send(user);
   } catch (error) {
     console.log(error);
   }
