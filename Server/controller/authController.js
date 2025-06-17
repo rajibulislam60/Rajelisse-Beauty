@@ -43,16 +43,32 @@ const registrationController = async (req, res) => {
   });
 };
 
-const loginController = (req, res) => {
+const loginController = async (req, res) => {
   let { email, password } = req.body;
+
   try {
-    let user = new userModel({
-      email,
+    let existringuser = await userModel.findOne({ email });
+    if (!existingUser) {
+      return res.status(401).send({ error: "Invalid email or password" });
+    }
+
+    bcrypt.compare(
       password,
-    });
-    res.send(user);
+      existringuser.password,
+      async function (err, result) {
+        if (result) {
+          return res.status(200).send({
+            success: "Login Successful",
+            data: existringuser,
+          });
+        } else {
+          return res.status(404).send({ error: "False email or password" });
+        }
+      }
+    );
   } catch (error) {
-    console.log(error);
+    console.error("Login error:", error);
+    return res.status(500).send({ error: "Server error" });
   }
 };
 
