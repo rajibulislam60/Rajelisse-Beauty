@@ -1,5 +1,6 @@
 const EmailValidateCheck = require("../helpers/validateEmail");
 const userModel = require("../model/userModel");
+const bcrypt = require("bcrypt");
 
 const registrationController = async (req, res) => {
   let { name, email, phone, usertype, password } = req.body;
@@ -21,19 +22,25 @@ const registrationController = async (req, res) => {
       error: "Email already in use.",
     });
   }
-  try {
-    let user = new userModel({
-      name,
-      email,
-      phone,
-      usertype,
-      password,
-    });
-    await user.save();
-    res.send(user);
-  } catch (error) {
-    console.log(error);
-  }
+  bcrypt.hash(password, 10, async function (err, hash) {
+    if (err || !hash) {
+      return res.status(500).send({ error: "Password encryption failed" });
+    }
+
+    try {
+      let user = new userModel({
+        name,
+        email,
+        phone,
+        usertype,
+        password: hash,
+      });
+      await user.save();
+      res.send(user);
+    } catch (error) {
+      console.log(error);
+    }
+  });
 };
 
 const loginController = (req, res) => {
