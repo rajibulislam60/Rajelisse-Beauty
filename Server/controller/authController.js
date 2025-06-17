@@ -1,13 +1,24 @@
-const sendEmail = require("../helpers/sendEmail");
 const EmailValidateCheck = require("../helpers/validateEmail");
 const userModel = require("../model/userModel");
 
 const registrationController = async (req, res) => {
   let { name, email, phone, usertype, password } = req.body;
-  EmailValidateCheck(email);
+
   if (!name || !email || !phone || !password) {
     return res.status(400).send({
       error: "Field is required.",
+    });
+  }
+
+  if (!EmailValidateCheck(email)) {
+    return res.send({
+      error: "Invalid Email",
+    });
+  }
+  let existringuser = await userModel.findOne({ email });
+  if (existringuser) {
+    return res.status(409).send({
+      error: "Email already in use.",
     });
   }
   try {
@@ -19,7 +30,6 @@ const registrationController = async (req, res) => {
       password,
     });
     await user.save();
-    sendEmail(email);
     res.send(user);
   } catch (error) {
     console.log(error);
