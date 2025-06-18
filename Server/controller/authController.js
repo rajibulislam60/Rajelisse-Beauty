@@ -1,6 +1,7 @@
 const EmailValidateCheck = require("../helpers/validateEmail");
 const userModel = require("../model/userModel");
 const bcrypt = require("bcrypt");
+var jwt = require("jsonwebtoken");
 
 const registrationController = async (req, res) => {
   let { name, email, phone, usertype, password } = req.body;
@@ -47,19 +48,22 @@ const loginController = async (req, res) => {
   let { email, password } = req.body;
 
   try {
-    let existringuser = await userModel.findOne({ email });
-    if (!existingUser) {
+    let existringUser = await userModel.findOne({ email });
+    if (!existringUser) {
       return res.status(401).send({ error: "Invalid email or password" });
     }
 
     bcrypt.compare(
       password,
-      existringuser.password,
+      existringUser.password,
       async function (err, result) {
         if (result) {
+          var token = jwt.sign({ existringUser }, "shhhhh");
+          res.send({ token });
+
           return res.status(200).send({
             success: "Login Successful",
-            data: existringuser,
+            data: existringUser,
           });
         } else {
           return res.status(404).send({ error: "False email or password" });
