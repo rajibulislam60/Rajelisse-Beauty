@@ -45,31 +45,61 @@ const registrationController = async (req, res) => {
 };
 
 const loginController = async (req, res) => {
-  let { email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-    let existringUser = await userModel.findOne({ email });
-    if (!existringUser) {
+    const existingUser = await userModel.findOne({ email });
+    if (!existingUser) {
       return res.status(401).send({ error: "Invalid email or password" });
     }
 
-    bcrypt.compare(
-      password,
-      existringUser.password,
-      async function (err, result) {
-        if (result) {
-          var token = jwt.sign({ existringUser }, "shhhhh");
-          res.send({ token });
+    bcrypt.compare(password, existingUser.password, async (err, result) => {
+      if (result) {
+        const userInfo = {
+          id: existingUser.id,
+          email: existingUser.email,
+          usertype: existingUser.usertype,
+          phone: existingUser.phone,
+          name: existingUser.name,
+        };
 
-          return res.status(200).send({
-            success: "Login Successful",
-            data: existringUser,
-          });
+        let expiresIn;
+        let successMessage;
+
+        if (existingUser.usertype === "client") {
+          expiresIn = "7d";
+          successMessage = "Login Successful";
+        } else if (existingUser.usertype === "admin") {
+          expiresIn = "6h";
+          successMessage = "Admin Login Successful";
+        } else if (
+          existingUser.usertype === "driver" ||
+          existingUser.usertype === "employee"
+        ) {
+          expiresIn = "12h";
+          successMessage = "Employee Login Successful";
         } else {
-          return res.status(404).send({ error: "False email or password" });
+          return res.status(403).send({ error: "Unauthorized usertype" });
         }
+
+        const token = jwt.sign({ userInfo }, process.env.JWT_Secret, {
+          expiresIn,
+        });
+
+        res.cookie("token", token, {
+          httpOnly: true,
+          secure: false,
+        });
+
+        return res.status(200).send({
+          success: successMessage,
+          data: existingUser,
+          token,
+        });
+      } else {
+        return res.status(401).send({ error: "Incorrect email or password" });
       }
-    );
+    });
   } catch (error) {
     console.error("Login error:", error);
     return res.status(500).send({ error: "Server error" });
