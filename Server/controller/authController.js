@@ -17,8 +17,8 @@ const registrationController = async (req, res) => {
       error: "Invalid Email",
     });
   }
-  let existringuser = await userModel.findOne({ email });
-  if (existringuser) {
+  let existringUser = await userModel.findOne({ email });
+  if (existringUser) {
     return res.status(409).send({
       error: "Email already in use.",
     });
@@ -27,7 +27,6 @@ const registrationController = async (req, res) => {
     if (err || !hash) {
       return res.status(500).send({ error: "Password encryption failed" });
     }
-
     try {
       let user = new userModel({
         name,
