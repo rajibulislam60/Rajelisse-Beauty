@@ -1,4 +1,5 @@
 const express = require("express");
+var cookieParser = require("cookie-parser");
 
 const app = express();
 require("dotenv").config();
@@ -10,6 +11,7 @@ const DBConnect = require("./confiq/dbconfiq");
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(router);
