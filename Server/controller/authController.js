@@ -5,9 +5,6 @@ const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 
 const registrationController = async (req, res) => {
-  sendEmail();
-  res.send("testmail");
-  return;
   let { name, email, phone, usertype, password } = req.body;
 
   if (!name || !email || !phone || !password) {
@@ -40,6 +37,7 @@ const registrationController = async (req, res) => {
         password: hash,
       });
       await user.save();
+      sendEmail(email);
       res.send(user);
     } catch (error) {
       console.log(error);
