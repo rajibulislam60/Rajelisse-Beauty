@@ -1,9 +1,13 @@
+const sendEmail = require("../helpers/sendEmail");
 const EmailValidateCheck = require("../helpers/validateEmail");
 const userModel = require("../model/userModel");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 
 const registrationController = async (req, res) => {
+  sendEmail();
+  res.send("testmail");
+  return;
   let { name, email, phone, usertype, password } = req.body;
 
   if (!name || !email || !phone || !password) {

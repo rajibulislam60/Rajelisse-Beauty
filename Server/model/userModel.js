@@ -36,6 +36,13 @@ let userSchema = new mongoose.Schema(
       type: String,
       require: [true, "user type is require"],
     },
+    otp: {
+      type: Number,
+    },
+    isVerify: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
