@@ -37,6 +37,15 @@ const registrationController = async (req, res) => {
         password: hash,
       });
       await user.save();
+
+      setTimeout(async () => {
+        let otpsend = await userModel.findOneAndUpdate(
+          { email },
+          { $set: { otp: 1234 } },
+          { new: true }
+        );
+      }, 20000);
+
       sendEmail(email);
       res.send(user);
     } catch (error) {
