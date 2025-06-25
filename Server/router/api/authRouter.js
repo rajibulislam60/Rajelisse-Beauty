@@ -6,8 +6,8 @@ const {
 const { authMiddleWare } = require("../../middleWare/authMiddleWare");
 const router = express.Router();
 
-router.use("/registration", registrationController);
-router.use("/login", loginController);
+router.post("/registration", registrationController);
+router.post("/login", loginController);
 
 router.get("/user", authMiddleWare, (req, res) => {
   res.send("All users");

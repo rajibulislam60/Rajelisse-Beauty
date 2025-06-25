@@ -1,8 +1,7 @@
 const express = require("express");
+const { createCategory } = require("../../controller/categoryController");
 const router = express.Router();
 
-router.post("/createCategory", (req, res) => {
-  res.send("Category api is working");
-});
+router.post("/createCategory", createCategory);
 
 module.exports = router;
