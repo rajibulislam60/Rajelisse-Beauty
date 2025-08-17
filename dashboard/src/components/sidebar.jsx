@@ -67,7 +67,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/add-product"
+                    to="/addproduct"
                     className={({ isActive }) =>
                       `block px-2 py-1 rounded-md ${
                         isActive
@@ -81,7 +81,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/all-product"
+                    to="/allproduct"
                     className={({ isActive }) =>
                       `block px-2 py-1 rounded-md ${
                         isActive
