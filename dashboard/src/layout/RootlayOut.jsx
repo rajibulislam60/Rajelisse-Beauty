@@ -1,9 +1,11 @@
 import React from "react";
 import { Outlet } from "react-router";
+import Sidebar from "../components/sidebar";
 
 const RootlayOut = () => {
   return (
-    <div>
+    <div className="flex gap-3">
+      <Sidebar />
       <Outlet />
     </div>
   );
