@@ -39,7 +39,7 @@ const Sidebar = () => {
               <ul className="ml-4 mt-2 space-y-2">
                 <li>
                   <NavLink
-                    to="/add-category"
+                    to="/addcategory"
                     className={({ isActive }) =>
                       `block px-2 py-1 rounded-md ${
                         isActive
@@ -53,7 +53,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/all-category"
+                    to="/allcategory"
                     className={({ isActive }) =>
                       `block px-2 py-1 rounded-md ${
                         isActive
@@ -131,6 +131,18 @@ const Sidebar = () => {
               }
             >
               Total Completed
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/courier"
+              className={({ isActive }) =>
+                `block px-2 py-1 rounded-md ${
+                  isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
+                }`
+              }
+            >
+              Courier
             </NavLink>
           </li>
         </ul>
