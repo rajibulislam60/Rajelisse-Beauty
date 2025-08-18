@@ -14,6 +14,7 @@ import AddProduct from "./components/products/AddProduct";
 import AllPrdouct from "./components/products/AllProduct";
 import Invoice from "./pages/Invoice";
 import Complated from "./pages/Complated";
+import Courier from "./pages/Courier";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
           <Route path="/allproduct" element={<AllPrdouct />} />
           <Route path="/invoice" element={<Invoice />} />
           <Route path="/complated" element={<Complated />} />
+          <Route path="/courier" element={<Courier />} />
         </Route>
       </Route>
     </>
