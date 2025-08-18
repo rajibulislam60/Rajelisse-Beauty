@@ -12,6 +12,8 @@ import AddCategory from "./components/products/AddCategory";
 import AllCategory from "./components/products/AllCategory";
 import AddProduct from "./components/products/AddProduct";
 import AllPrdouct from "./components/products/AllProduct";
+import Invoice from "./pages/Invoice";
+import Complated from "./pages/Complated";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +26,8 @@ const router = createBrowserRouter(
           <Route path="/allcategory" element={<AllCategory />} />
           <Route path="/addproduct" element={<AddProduct />} />
           <Route path="/allproduct" element={<AllPrdouct />} />
+          <Route path="/invoice" element={<Invoice />} />
+          <Route path="/complated" element={<Complated />} />
         </Route>
       </Route>
     </>

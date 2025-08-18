@@ -123,7 +123,7 @@ const Sidebar = () => {
           </li>
           <li>
             <NavLink
-              to="/completed"
+              to="/complated"
               className={({ isActive }) =>
                 `block px-2 py-1 rounded-md ${
                   isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
