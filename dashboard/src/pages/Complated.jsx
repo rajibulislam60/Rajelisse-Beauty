@@ -7,10 +7,10 @@ const Complated = () => {
 
   // Dummy company info
   const company = {
-    name: "Tech Solutions Ltd.",
-    address: "Bashundhara R/A, Dhaka, Bangladesh",
-    phone: "+880 1234-567890",
-    email: "info@techsolutions.com",
+    name: "RSCF Solutions.",
+    address: "Kazipara, Mirpur, Dhaka, Bangladesh",
+    phone: "+880 1981-869112",
+    email: "info@rscfsolutions.com",
   };
 
   // Dummy completed orders
