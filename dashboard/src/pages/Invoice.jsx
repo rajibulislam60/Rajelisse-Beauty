@@ -22,6 +22,7 @@ const Invoice = () => {
       address: "Dhaka, Mirpur, Shewrapara, Road-5, House-1200",
       product: "Laptop",
       price: 28000,
+      deliveryCharge: 500,
     },
     {
       id: 2,
@@ -30,6 +31,7 @@ const Invoice = () => {
       address: "Badda, Dhaka",
       product: "Mobile Phone",
       price: 18000,
+      deliveryCharge: 400,
     },
     {
       id: 3,
@@ -38,6 +40,7 @@ const Invoice = () => {
       address: "Bashundhara R/A, Dhaka",
       product: "Headphone",
       price: 4000,
+      deliveryCharge: 200,
     },
   ];
 
@@ -78,32 +81,31 @@ const Invoice = () => {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6 no-print">
         <div>
-          <h2 className="text-xl font-bold">{company.name}</h2>
-          <p>{company.address}</p>
-          <p>Phone: {company.phone}</p>
-          <p>Email: {company.email}</p>
+          <h2 className="text-2xl font-bold text-blue-700">{company.name}</h2>
+          <p className="text-gray-600">{company.address}</p>
+          <p className="text-gray-600">📞 {company.phone}</p>
+          <p className="text-gray-600">✉️ {company.email}</p>
         </div>
         <button
           onClick={handlePrint}
-          className="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700"
+          className="px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow hover:from-blue-700 hover:to-indigo-700"
         >
-          Print Invoice
+          🖨️ Print Invoice
         </button>
       </div>
 
       <div className="mb-4 flex justify-between items-center no-print">
         <input
           type="text"
-          placeholder="Search by customer or product..."
+          placeholder="🔍 Search by customer or product..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border px-3 py-2 rounded w-1/3"
+          className="border px-4 py-2 rounded-lg shadow-sm w-1/3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
-      {/* Table (screen only) */}
-      <div className="border rounded shadow overflow-hidden no-print">
-        <ul className="grid grid-cols-6 font-bold border-b bg-gray-100 p-2">
+      <div className="border rounded-lg shadow overflow-hidden no-print">
+        <ul className="grid grid-cols-6 font-bold border-b bg-gradient-to-r from-gray-100 to-gray-200 p-3">
           <li>
             <input
               type="checkbox"
@@ -112,7 +114,7 @@ const Invoice = () => {
             />{" "}
             Select
           </li>
-          <li>Customer Details</li>
+          <li>Customer</li>
           <li>Product</li>
           <li>Price</li>
           <li>Address</li>
@@ -122,7 +124,7 @@ const Invoice = () => {
         {filteredOrders.map((order) => (
           <ul
             key={order.id}
-            className="grid grid-cols-6 items-center border-b p-2"
+            className="grid grid-cols-6 items-center border-b p-3 hover:bg-gray-50 transition"
           >
             <li>
               <input
@@ -132,23 +134,24 @@ const Invoice = () => {
               />
             </li>
             <li>
-              <h4 className="font-semibold">{order.customer}</h4>
-              <h5>{order.phone}</h5>
+              <h4 className="font-semibold text-gray-800">{order.customer}</h4>
+              <h5 className="text-sm text-gray-500">{order.phone}</h5>
             </li>
-            <li>{order.product}</li>
-            <li>{order.price.toLocaleString()} Tk</li>
-            <li className="text-sm">{order.address}</li>
+            <li className="text-gray-700">{order.product}</li>
+            <li className="font-semibold text-blue-600">
+              {order.price.toLocaleString()} Tk
+            </li>
+            <li className="text-sm text-gray-600">{order.address}</li>
             <li>
-              <span className="px-2 py-1 text-sm bg-green-100 text-green-700 rounded">
-                Active
+              <span className="px-2 py-1 text-xs bg-green-100 text-green-700 font-medium rounded-full">
+                ✅ Active
               </span>
             </li>
           </ul>
         ))}
 
-        {/* Total */}
-        <div className="p-4 font-bold text-right">
-          Total Amount ={" "}
+        <div className="p-4 font-bold text-right bg-gray-50">
+          Total ={" "}
           {filteredOrders
             .reduce((acc, item) => acc + item.price, 0)
             .toLocaleString()}{" "}
@@ -160,37 +163,74 @@ const Invoice = () => {
       <div className="print-only">
         {orders
           .filter((o) => selectedRows.includes(o.id))
-          .map((order) => (
-            <div key={order.id} className="a4-page">
-              {/* Company Info */}
-              <div className="mb-6 border-b pb-4 text-center">
-                <h2 className="text-2xl font-bold">{company.name}</h2>
-                <p>{company.address}</p>
-                <p>Phone: {company.phone}</p>
-                <p>Email: {company.email}</p>
-              </div>
+          .map((order) => {
+            const total = order.price + order.deliveryCharge;
+            return (
+              <div
+                key={order.id}
+                className="a4-page border p-8 rounded-lg mb-6 shadow"
+              >
+                {/* Company Info */}
+                <div className="mb-6 border-b pb-4 text-center">
+                  <h2 className="text-3xl font-bold text-blue-700">
+                    {company.name}
+                  </h2>
+                  <p>{company.address}</p>
+                  <p>📞 {company.phone}</p>
+                  <p>✉️ {company.email}</p>
+                </div>
 
-              {/* Order Info */}
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Order Invoice</h3>
-                <p>
-                  <b>Customer:</b> {order.customer}
-                </p>
-                <p>
-                  <b>Phone:</b> {order.phone}
-                </p>
-                <p>
-                  <b>Address:</b> {order.address}
-                </p>
-                <p>
-                  <b>Product:</b> {order.product}
-                </p>
-                <p>
-                  <b>Price:</b> {order.price.toLocaleString()} Tk
-                </p>
+                <h3 className="text-xl font-semibold mb-4 text-gray-700 underline">
+                  Order Invoice
+                </h3>
+
+                {/* Customer & Order Info */}
+                <div className="grid grid-cols-2 gap-6 mb-6">
+                  <div className="space-y-2">
+                    <p>
+                      <b>Customer:</b> {order.customer}
+                    </p>
+                    <p>
+                      <b>Phone:</b> {order.phone}
+                    </p>
+                    <p>
+                      <b>Address:</b> {order.address}
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <p>
+                      <b>Product:</b> {order.product}
+                    </p>
+                    <p>
+                      <b>Price:</b>{" "}
+                      <span className="text-blue-600 font-bold">
+                        {order.price.toLocaleString()} Tk
+                      </span>
+                    </p>
+                    <p>
+                      <b>Delivery Charge:</b>{" "}
+                      <span className="text-gray-700">
+                        {order.deliveryCharge.toLocaleString()} Tk
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                {/* Total */}
+                <div className="border-t pt-3 flex justify-between text-lg font-bold">
+                  <span>Total:</span>
+                  <span className="text-blue-700">
+                    {total.toLocaleString()} Tk
+                  </span>
+                </div>
+
+                <div className="border-t pt-4 text-right text-gray-600 text-sm mt-6">
+                  <p>Thank you for your purchase! 💙</p>
+                  <p>Powered by {company.name}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
       </div>
     </div>
   );
