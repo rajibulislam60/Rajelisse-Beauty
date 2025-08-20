@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+/* Hide / Show sections */
+.no-print {
+  display: block;
+}
+.print-only {
+  display: none;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .a4-page {
+    page-break-after: always;
+    width: 210mm;
+    min-height: 297mm;
+    padding: 20mm;
+    box-sizing: border-box;
+  }
+}

@@ -5,7 +5,7 @@ const Invoice = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [search, setSearch] = useState("");
 
-  // Dummy company info
+  // Company Info
   const company = {
     name: "RSCF Solutions.",
     address: "Kazipara, Mirpur, Dhaka, Bangladesh",
@@ -13,7 +13,7 @@ const Invoice = () => {
     email: "info@rscfsolutions.com",
   };
 
-  // Dummy customer + product data
+  // Dummy Orders
   const orders = [
     {
       id: 1,
@@ -41,7 +41,7 @@ const Invoice = () => {
     },
   ];
 
-  // Handle select all
+  // Select All
   const toggleSelectAll = () => {
     if (selectAll) {
       setSelectedRows([]);
@@ -51,29 +51,32 @@ const Invoice = () => {
     setSelectAll(!selectAll);
   };
 
-  // Handle individual select
+  // Select Single
   const toggleSelect = (id) => {
     setSelectedRows((prev) =>
       prev.includes(id) ? prev.filter((row) => row !== id) : [...prev, id]
     );
   };
 
-  // Filter by search
+  // Search Filter
   const filteredOrders = orders.filter(
     (o) =>
       o.customer.toLowerCase().includes(search.toLowerCase()) ||
       o.product.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Print function
+  // Print Function
   const handlePrint = () => {
+    if (selectedRows.length === 0) {
+      alert("Please select at least one order to print.");
+      return;
+    }
     window.print();
   };
 
   return (
     <div className="p-6">
-      {/* Header: Company & Print */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6 no-print">
         <div>
           <h2 className="text-xl font-bold">{company.name}</h2>
           <p>{company.address}</p>
@@ -88,8 +91,7 @@ const Invoice = () => {
         </button>
       </div>
 
-      {/* Search Bar */}
-      <div className="mb-4 flex justify-between items-center">
+      <div className="mb-4 flex justify-between items-center no-print">
         <input
           type="text"
           placeholder="Search by customer or product..."
@@ -99,8 +101,8 @@ const Invoice = () => {
         />
       </div>
 
-      {/* Table */}
-      <div className="border rounded shadow overflow-hidden">
+      {/* Table (screen only) */}
+      <div className="border rounded shadow overflow-hidden no-print">
         <ul className="grid grid-cols-6 font-bold border-b bg-gray-100 p-2">
           <li>
             <input
@@ -144,7 +146,7 @@ const Invoice = () => {
           </ul>
         ))}
 
-        {/* Footer: Total */}
+        {/* Total */}
         <div className="p-4 font-bold text-right">
           Total Amount ={" "}
           {filteredOrders
@@ -152,6 +154,43 @@ const Invoice = () => {
             .toLocaleString()}{" "}
           Tk
         </div>
+      </div>
+
+      {/* Print Section */}
+      <div className="print-only">
+        {orders
+          .filter((o) => selectedRows.includes(o.id))
+          .map((order) => (
+            <div key={order.id} className="a4-page">
+              {/* Company Info */}
+              <div className="mb-6 border-b pb-4 text-center">
+                <h2 className="text-2xl font-bold">{company.name}</h2>
+                <p>{company.address}</p>
+                <p>Phone: {company.phone}</p>
+                <p>Email: {company.email}</p>
+              </div>
+
+              {/* Order Info */}
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Order Invoice</h3>
+                <p>
+                  <b>Customer:</b> {order.customer}
+                </p>
+                <p>
+                  <b>Phone:</b> {order.phone}
+                </p>
+                <p>
+                  <b>Address:</b> {order.address}
+                </p>
+                <p>
+                  <b>Product:</b> {order.product}
+                </p>
+                <p>
+                  <b>Price:</b> {order.price.toLocaleString()} Tk
+                </p>
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );
