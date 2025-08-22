@@ -5,15 +5,11 @@ const AddCategory = () => {
   const [formdata, setFormdata] = useState({
     name: "",
     description: "",
-    image: null,
   });
+  const [image, setImage] = useState(null);
 
   const handleChange = (e) => {
     setFormdata({ ...formdata, [e.target.name]: e.target.value });
-  };
-
-  const handleFileChange = (e) => {
-    setFormdata({ ...formdata, image: e.target.files[0] });
   };
 
   const handleSubmit = async (e) => {
@@ -22,14 +18,17 @@ const AddCategory = () => {
     let data = new FormData();
     data.append("name", formdata.name);
     data.append("description", formdata.description);
-    data.append("image", formdata.image);
+    if (image) {
+      data.append("image", image);
+    }
 
     try {
       const response = await axios.post(
         "http://localhost:5000/api/v1/category/createCategory",
         data
       );
-      console.log("Success:", response);
+      console.log(response.data);
+      setFormdata({ name: "", description: "" });
     } catch (error) {
       console.error("Error:", error);
     }
@@ -79,9 +78,9 @@ const AddCategory = () => {
               Upload Image
             </label>
             <input
+              onChange={(e) => setImage(e.target.files[0])}
               type="file"
-              name="image"
-              onChange={handleFileChange}
+              accept="image/*"
               className="w-full border rounded-lg px-3 py-2"
             />
           </div>
