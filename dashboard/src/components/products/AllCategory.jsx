@@ -1,27 +1,25 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 const AllCategory = () => {
   // Dummy data for design preview
-  const categories = [
-    {
-      id: 1,
-      name: "Pizza",
-      description: "Delicious cheesy pizzas",
-      image: "https://via.placeholder.com/80",
-    },
-    {
-      id: 2,
-      name: "Burger",
-      description: "Juicy grilled burgers",
-      image: "https://via.placeholder.com/80",
-    },
-    {
-      id: 3,
-      name: "Drinks",
-      description: "Refreshing soft drinks",
-      image: "https://via.placeholder.com/80",
-    },
-  ];
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/v1/category/allCategory"
+      );
+      console.log(response);
+      setCategories(response.data.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
   return (
     <div className="p-6 w-[80%]">
