@@ -4,7 +4,6 @@ const AddProduct = () => {
   return (
     <div className="p-6 flex justify-center w-[80%]">
       <div className="bg-white shadow-lg rounded-xl p-6 w-full h-[90vh] overflow-y-auto">
-        {/* Heading */}
         <h2 className="text-2xl font-bold mb-6 text-gray-800">
           Add New Product
         </h2>
