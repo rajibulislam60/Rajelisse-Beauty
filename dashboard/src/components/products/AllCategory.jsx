@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 const AllCategory = () => {
-  // Dummy data for design preview
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -16,6 +15,18 @@ const AllCategory = () => {
       );
       console.log(response);
       setCategories(response.data.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(
+        `http://localhost:5000/api/v1/category/deleteCategory/${id}`
+      );
+
+      setCategories((prev) => prev.filter((cat) => cat._id !== id));
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -59,7 +70,10 @@ const AllCategory = () => {
                   <button className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600">
                     Edit
                   </button>
-                  <button className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600">
+                  <button
+                    onClick={() => handleDelete(cat._id)}
+                    className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
+                  >
                     Delete
                   </button>
                 </td>
