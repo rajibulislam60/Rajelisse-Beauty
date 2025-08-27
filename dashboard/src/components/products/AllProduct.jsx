@@ -1,39 +1,36 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 const AllProduct = () => {
-  // Dummy data for preview
-  const products = [
-    {
-      id: 1,
-      name: "iPhone 15",
-      description: "Latest Apple iPhone",
-      sellingPrice: 999,
-      discountPrice: 899,
-      stock: 10,
-      category: "Electronics",
-      image: "https://via.placeholder.com/80",
-    },
-    {
-      id: 2,
-      name: "Nike Shoes",
-      description: "Comfortable running shoes",
-      sellingPrice: 120,
-      discountPrice: 100,
-      stock: 20,
-      category: "Fashion",
-      image: "https://via.placeholder.com/80",
-    },
-    {
-      id: 3,
-      name: "Pizza",
-      description: "Delicious cheese pizza",
-      sellingPrice: 15,
-      discountPrice: 12,
-      stock: 30,
-      category: "Food",
-      image: "https://via.placeholder.com/80",
-    },
-  ];
+  const [allproducts, setAllproducts] = useState([]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/v1/product/allproducts"
+      );
+      console.log(response);
+      setAllproducts(response.data.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(
+        `http://localhost:5000/api/v1/product/deleteProduct/${id}`
+      );
+
+      setAllproducts((prev) => prev.filter((prod) => prod._id !== id));
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
   return (
     <div className="p-6 w-[80%] h-[90vh] overflow-y-auto">
@@ -70,7 +67,7 @@ const AllProduct = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map((prod) => (
+            {allproducts.map((prod) => (
               <tr key={prod.id} className="border-b hover:bg-gray-50">
                 <td className="p-3">
                   <img
@@ -89,7 +86,10 @@ const AllProduct = () => {
                   <button className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600">
                     Edit
                   </button>
-                  <button className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600">
+                  <button
+                    onClick={() => handleDelete(prod._id)}
+                    className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
+                  >
                     Delete
                   </button>
                 </td>
