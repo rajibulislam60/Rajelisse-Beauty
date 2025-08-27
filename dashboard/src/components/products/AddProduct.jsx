@@ -40,24 +40,25 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    let data = new FormData();
+    data.append("name", formdata.name);
+    data.append("description", formdata.description);
+    data.append("category", formdata.category);
+    data.append("stock", formdata.stock);
+    data.append("sellingPrice", formdata.sellingPrice);
+    data.append("discountPrice", formdata.discountPrice);
+    images.forEach((image) => {
+      data.append("image", image);
+    });
+
     try {
-      const data = new FormData();
-      Object.keys(formdata).forEach((key) => {
-        data.append(key, formdata[key]);
-      });
-
-      images.forEach((img) => {
-        data.append("images", img);
-      });
-
       const response = await axios.post(
-        "http://localhost:5000/api/v1/product/createProduct",
+        "http://localhost:5000/api/v1/product/createProducts",
         data
       );
 
-      console.log("Product Added:", response.data);
+      console.log(response);
 
-      // reset form
       setFormdata({
         name: "",
         description: "",
