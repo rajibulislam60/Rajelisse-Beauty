@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 
 const AllProduct = () => {
   const [allproducts, setAllproducts] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     fetchProducts();
@@ -20,6 +21,22 @@ const AllProduct = () => {
     }
   };
 
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/v1/category/allCategory"
+      );
+      console.log(response);
+      setCategories(response.data.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
   const handleDelete = async (id) => {
     try {
       await axios.delete(
@@ -30,6 +47,14 @@ const AllProduct = () => {
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
+  };
+
+  const getCategoryName = (categoryId) => {
+    const id = Array.isArray(categoryId) ? categoryId[0] : categoryId;
+
+    const category = categories.find((cate) => cate._id === id);
+
+    return category ? category.name : "No Category";
   };
 
   return (
@@ -78,9 +103,11 @@ const AllProduct = () => {
                 </td>
                 <td className="p-3 font-medium text-gray-800">{prod.name}</td>
                 <td className="p-3 text-gray-600">{prod.description}</td>
-                <td className="p-3 text-gray-600">{prod.category}</td>
-                <td className="p-3 text-gray-600">${prod.sellingPrice}</td>
-                <td className="p-3 text-gray-600">${prod.discountPrice}</td>
+                <td className="p-3 text-gray-600">
+                  {getCategoryName(prod.category)}
+                </td>
+                <td className="p-3 text-gray-600">{prod.sellingPrice} TK</td>
+                <td className="p-3 text-gray-600">{prod.discountPrice} TK</td>
                 <td className="p-3 text-gray-600">{prod.stock}</td>
                 <td className="p-3 text-center space-x-2">
                   <button className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600">
