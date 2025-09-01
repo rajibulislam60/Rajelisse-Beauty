@@ -1,49 +1,117 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import Container from "../Container";
-import singleProductImage from "../../images/product3.jpg";
+import axios from "axios";
 
 const SingleProduct = () => {
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    fetchSingleProduct();
+  }, [id]);
+
+  const fetchSingleProduct = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/v1/product/singleproduct/${id}`
+      );
+      console.log(response.data.data);
+      setProduct(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (!product) {
+    return (
+      <div className="py-10 text-center text-2xl font-semibold">
+        Loading product...
+      </div>
+    );
+  }
+
   return (
     <div className="py-10">
       <Container>
-        <div className="flex justify-between">
-          <div className="w-[45%] h-[500px]">
+        <div className="flex flex-col md:flex-row justify-between gap-8">
+          {/* Product Image */}
+          <div className="w-full md:w-[45%] h-[400px]">
             <img
-              className="w-full h-full"
-              src={singleProductImage}
-              alt="Single Product Image"
+              className="w-full h-full object-cover rounded-md"
+              src={product.image}
+              alt={product.name}
             />
           </div>
-          <div className="w-[55%] px-5">
-            <h3 className="text-3xl font-semibold">
-              Aloe Vera face hydration cream
-            </h3>
-            <h4 className="text-2xl font-bold mt-3">Price: 2,550TK</h4>
+
+          {/* Product Info */}
+          <div className="w-full md:w-[55%] px-5">
+            <h3 className="text-3xl font-semibold">{product.name}</h3>
+
+            {/* Prices */}
+            <div className="mt-3">
+              {product.discountPrice > 0 ? (
+                <>
+                  <h4 className="text-2xl font-bold text-red-600">
+                    Discount Price: {product.discountPrice} TK
+                  </h4>
+                  <h4 className="text-lg line-through text-gray-500">
+                    Original: {product.sellingPrice} TK
+                  </h4>
+                </>
+              ) : (
+                <h4 className="text-2xl font-bold">
+                  Price: {product.sellingPrice} TK
+                </h4>
+              )}
+            </div>
+
+            {/* Stock Info */}
+            <p
+              className={`mt-2 font-medium ${
+                product.stock > 0 ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {product.stock > 0
+                ? `In Stock: ${product.stock}`
+                : "Out of Stock"}
+            </p>
+
+            {/* Quantity Control */}
             <div className="flex items-center gap-3 mt-8">
-              <button className=" w-[40px] py-1 font-semibold text-2xl bg-teal-600 text-white hover:bg-teal-800 cursor-pointer">
+              <button
+                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                disabled={quantity <= 1}
+                className="w-[40px] py-1 font-semibold text-2xl bg-teal-600 text-white hover:bg-teal-800 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 -
               </button>
-              <h4 className="font-semibold text-2xl">1</h4>
-              <button className="w-[40px] py-1 font-semibold text-2xl bg-teal-600 text-white hover:bg-teal-800 cursor-pointer">
+              <h4 className="font-semibold text-2xl">{quantity}</h4>
+              <button
+                onClick={() =>
+                  setQuantity((q) =>
+                    product.stock ? Math.min(product.stock, q + 1) : q + 1
+                  )
+                }
+                disabled={product.stock && quantity >= product.stock}
+                className="w-[40px] py-1 font-semibold text-2xl bg-teal-600 text-white hover:bg-teal-800 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 +
               </button>
             </div>
-            <p className="text-[16px] font-regular mt-8">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta
-              sunt magnam, alias praesentium harum quisquam laboriosam nemo
-              perspiciatis voluptates soluta. Harum nihil ab autem fugit nam,
-              aspernatur nisi veniam, nesciunt quia consectetur inventore!
-              Cumque rem iure repellat a, magnam ea iste quod ipsum obcaecati
-              expedita veniam itaque ad, fugit doloribus odio autem eaque minima
-              omnis recusandae fuga sed quos! Excepturi est quos amet odit
-              aliquam nesciunt laudantium deserunt pariatur! Aliquid sed, rem
-              eos pariatur nobis recusandae accusamus tempore magni aspernatur
-              quia a porro doloremque beatae voluptatum voluptates non
-              temporibus soluta ex distinctio vitae dolor? Ut aut suscipit esse
-              natus veritatis.
+
+            {/* Description */}
+            <p className="text-[16px] mt-8 leading-relaxed text-gray-600">
+              {product.description || "No description available."}
             </p>
-            <button className="text-2xl font-semibold bg-teal-600 text-white hover:bg-teal-800 cursor-pointer py-2 w-full text-center mt-18 rounded-md">
-              Add to Cart
+
+            {/* Add to Cart */}
+            <button
+              className="text-2xl font-semibold bg-teal-600 text-white hover:bg-teal-800 cursor-pointer py-2 w-full text-center mt-10 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={product.stock === 0}
+            >
+              {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
             </button>
           </div>
         </div>

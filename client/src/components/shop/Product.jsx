@@ -3,8 +3,9 @@ import { useNavigate } from "react-router";
 
 const ProductItem = ({ allproducts }) => {
   const navigate = useNavigate();
-  const handleClicktoId = () => {
-    navigate("/singleproduct");
+
+  const handleClicktoId = ({ item }) => {
+    navigate(`/shop/singleproduct/${item}`);
   };
 
   return (
@@ -13,7 +14,7 @@ const ProductItem = ({ allproducts }) => {
         <div
           key={prod.id}
           className="w-[100%] md:w-[90%]  bg-white py-2 text-center shadow-md hover:shadow-lg transition-shadow duration-300"
-          onClick={handleClicktoId}
+          onClick={() => handleClicktoId(prod._id)}
         >
           <div className="overflow-hidden cursor-pointer">
             <img
