@@ -4,15 +4,15 @@ import { useNavigate } from "react-router";
 const ProductItem = ({ allproducts }) => {
   const navigate = useNavigate();
 
-  const handleClicktoId = ({ item }) => {
-    navigate(`/shop/singleproduct/${item}`);
+  const handleClicktoId = (id) => {
+    navigate(`/shop/singleproduct/${id}`);
   };
 
   return (
     <div className="grid grid-cols-3 gap-3">
       {allproducts.map((prod) => (
         <div
-          key={prod.id}
+          key={prod._id}
           className="w-[100%] md:w-[90%]  bg-white py-2 text-center shadow-md hover:shadow-lg transition-shadow duration-300"
           onClick={() => handleClicktoId(prod._id)}
         >
