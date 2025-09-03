@@ -86,10 +86,13 @@ const SingleProduct = () => {
               {product.discountPrice > 0 ? (
                 <>
                   <h4 className="text-2xl font-bold text-red-600">
-                    Discount Price: {product.discountPrice} TK
+                    Price: {product.discountPrice} TK
                   </h4>
                   <h4 className="text-lg line-through text-gray-500">
                     Original: {product.sellingPrice} TK
+                  </h4>
+                  <h4 className="text-lg text-gray-500">
+                    Save: {product.discountPrice - product.sellingPrice} TK
                   </h4>
                 </>
               ) : (
@@ -131,10 +134,6 @@ const SingleProduct = () => {
               </button>
             </div>
 
-            <p className="text-[16px] mt-8 leading-relaxed text-gray-600">
-              {product.description || "No description available."}
-            </p>
-
             <button
               onClick={handleAddToCart}
               className="text-2xl font-semibold bg-teal-600 text-white hover:bg-teal-800 cursor-pointer py-2 w-full text-center mt-10 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
@@ -142,6 +141,10 @@ const SingleProduct = () => {
             >
               {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
             </button>
+
+            <p className="text-[16px] mt-8 leading-relaxed text-gray-600">
+              {product.description || "No description available."}
+            </p>
           </div>
         </div>
       </Container>
