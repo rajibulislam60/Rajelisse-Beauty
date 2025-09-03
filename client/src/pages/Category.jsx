@@ -2,54 +2,9 @@ import React from "react";
 import Container from "./../components/Container";
 import { useState } from "react";
 import { useEffect } from "react";
-// import makeupImage from "../images/makeup.avif";
-// import kBeautyImage from "../images/kbeauty.jpg";
-// import haircareImage from "../images/haircare.jpeg";
-// import skincareImage from "../images/skincare.avif";
-// import facecareImage from "../images/facecare.webp";
-// import undergarmentsImage from "../images/undergraments.webp";
-// import perfumeImage from "../images/perfume.jpg";
 import axios from "axios";
 
 const Category = () => {
-  // const data = [
-  //   {
-  //     id: 1,
-  //     image: makeupImage,
-  //     name: "MakeUp",
-  //   },
-  //   {
-  //     id: 2,
-  //     image: kBeautyImage,
-  //     name: "K-Beauty",
-  //   },
-  //   {
-  //     id: 3,
-  //     image: haircareImage,
-  //     name: "Hair Care",
-  //   },
-  //   {
-  //     id: 4,
-  //     image: skincareImage,
-  //     name: "Skin Care",
-  //   },
-  //   {
-  //     id: 5,
-  //     image: facecareImage,
-  //     name: "Face Care",
-  //   },
-  //   {
-  //     id: 6,
-  //     image: undergarmentsImage,
-  //     name: "Undergarments",
-  //   },
-  //   {
-  //     id: 7,
-  //     image: perfumeImage,
-  //     name: "Perfume",
-  //   },
-  // ];
-
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
