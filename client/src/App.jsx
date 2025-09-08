@@ -12,6 +12,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Shop from "./pages/Shop";
 import Category from "./pages/Category";
 import SingleProduct from "./components/shop/SingleProduct";
+import SingleCategory from "./components/SingleCategory";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
           <Route index element={<Home />} />
           <Route path="/category" element={<Category />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/shop/:id" element={<SingleCategory />} />
           <Route path="/shop/singleproduct/:id" element={<SingleProduct />} />
         </Route>
       </Route>

@@ -3,8 +3,10 @@ import Container from "./../components/Container";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 const Category = () => {
+  const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -23,13 +25,21 @@ const Category = () => {
     }
   };
 
+  const handleCategoryClick = (id) => {
+    navigate(`/shop/${id}`);
+  };
+
   return (
     <div>
       <Container>
         <div className="py-20">
           <div className="grid grid-cols-3 gap-4">
             {categories.map((item) => (
-              <div key={item.id} className="h-[380px] bg-teal-900 text-white">
+              <div
+                key={item.id}
+                onClick={() => handleCategoryClick(item._id)}
+                className="h-[380px] bg-teal-900 text-white"
+              >
                 <img
                   className="w-full h-[80%] object-cover rounded-bl-full shadow-md"
                   src={item.image}
